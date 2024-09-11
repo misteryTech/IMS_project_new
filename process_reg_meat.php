@@ -10,12 +10,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $price = $_POST['price'];
         $received_date = $_POST['received_date'];
         $supplier =$_POST['supplier'];
+        $disposed_meat =$_POST['disposed_meat'];
 
 
 
 
-        $insert_query_product = "INSERT INTO meat_db(meat_type, meat_parts, meat_price, purchased_date, supplier_id) VALUES
-        ('$meat_type','$part','$price','$received_date','$supplier')";
+        $insert_query_product = "INSERT INTO meat_db(meat_type, meat_parts, meat_price, purchased_date, supplier_id, meat_disposed) VALUES
+        ('$meat_type','$part','$price','$received_date','$supplier','$disposed_meat)";
 
        if($connection->query($insert_query_product) === TRUE){
 

@@ -5,13 +5,13 @@
 
                         $inventory_id = $_POST["id"];
 
-                        $sql_select = "SELECT * FROM inventory_transactions WHERE id = '$inventory_id'";
+                        $sql_select = "SELECT * FROM inventory_trans WHERE id = '$inventory_id'";
                         $result = $connection->query($sql_select);
 
                         if ($result->num_rows == 1) {
                             $row = $result->fetch_assoc();
 
-                            $product_id = $row["product_id"];
+                            $product_id = $row["productid"];
                             $transaction_type = $row["transaction_type"];
                             $quantity = $row["quantity"];
                             $transaction_date = $row["transaction_date"];
@@ -54,11 +54,11 @@
                                         <?php
                                        include("connection.php");
 
-                                              $mysqli_query_supplier =  mysqli_query($connection,"SELECT * FROM products WHERE id=$product_id ");
+                                              $mysqli_query_supplier =  mysqli_query($connection,"SELECT * FROM meat_db WHERE id=$product_id ");
 
                                                     while ($row = mysqli_fetch_assoc($mysqli_query_supplier)) {
 
-                                                      echo "<option value='" . $row['id'] . "'>Meat Details: " . $row['id'] . ' ' . $row['name']. ' ' .$row['category']. ' - Price: ' .$row['price']. "</option>";
+                                                      echo "<option value='" . $row['id'] . "'>Meat Details: " . $row['id'] . ' ' . $row['meat_type']. ' ' .$row['meat_parts']. ' - Price: ' .$row['meat_price']. "</option>";
                                                               }
                                        ?>
 
@@ -67,13 +67,13 @@
 
 
                 <label for="email">Transaction Type:</label>
-                <select  id="supplier" name="supplier" required>
+                <select  id="trans" name="trans" required>
                                         <?php
                                        include("connection.php");
 
-                                              $mysqli_query_supplier =  mysqli_query($connection,"SELECT * FROM inventory_transactions WHERE id= $product_id ");
+                                              $mysqli_query_supplier =  mysqli_query($connection,"SELECT * FROM inventory_trans WHERE id= $product_id ");
                                               ?>
-     <option value="<?php echo $transaction_type; ?>" selected><?php echo $transaction_type; ?></option>
+                                                 <option value="<?php echo $transaction_type; ?>" selected><?php echo $transaction_type; ?></option>
 
                                               <?php
                                                     while ($row = mysqli_fetch_assoc($mysqli_query_supplier)) {

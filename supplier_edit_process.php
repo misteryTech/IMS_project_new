@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $sql_update = "UPDATE supplier SET
                     shopname='$name',
                     location='$location',
-                    supplier_name='$supplier_name',
+                    supplier_shop_name='$supplier_name',
                     supplier_contact='$supplier_contact'
 
 

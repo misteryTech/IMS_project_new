@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
   $meat_id = $_POST["meat_id"];
-  $transaction_type = $_POST["transaction_type"];
+  $transaction_type = $_POST["trans"];
   $quantity = $_POST["quantity"];
   $transaction_date = $_POST["transaction_date"];
 

@@ -85,6 +85,15 @@
                 <input type="date" id="received_date" name="received_date" required>
             </div>
 
+
+
+            <div class="form-group">
+                <label for="received_date">Meat Disposed:</label>
+                <input type="date" id="meat_disposed" name="meat_disposed" required>
+            </div>
+
+
+
             <div class="form-group">
                 <label for="supplier">Supplier:</label>
                 <select id="supplier" name="supplier" required>
@@ -98,7 +107,7 @@
                     }
 
                     while ($row = mysqli_fetch_assoc($mysqli_query_supplier)) {
-                        echo "<option value='" . $row['name'] . "'>" . $row['name'] . "</option>";
+                        echo "<option value='" . $row['shopname'] . "'>" . $row['shopname'] . "</option>";
                     }
                     ?>
                 </select>

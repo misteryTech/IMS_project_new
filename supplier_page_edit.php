@@ -13,7 +13,7 @@
 
                             $supplier_id = $row["supplier_id"];
                             $name = $row["shopname"];
-                            $supplier_name = $row["supplier_name"];
+                            $supplier_name = $row["supplier_shop_name"];
                             $supplier_contact = $row["supplier_contact"];
                             $location = $row["location"];
 
