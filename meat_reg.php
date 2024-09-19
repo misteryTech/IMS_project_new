@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chicken Meat Registration</title>
+    <title>Beef Meat Registration</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .form-container {
@@ -57,29 +57,45 @@
         <div class="content">
 
             <form action="process_reg_meat.php" method="POST" class="form-container">
-            <h2>Register Chicken Meat</h2>
+            <h2>Register Meat</h2>
 
 
             <div class="form-group">
-                <label for="quantity">Meat Type</label>
-                <input type="text" id="meat_type" name="meat_type" value="Chicken" readonly>
+                <label for="meat_type">Meat Type:</label>
+                <select id="meat_type" name="meat_type" required>
+    <option value="">-- Select --</option>
+    <?php
+    include("connection.php");
+
+    // Select distinct types to avoid duplicates
+    $mysqli_query_supplier = mysqli_query($connection, "SELECT DISTINCT type FROM type_meat_db ORDER BY type ASC");
+
+    if (!$mysqli_query_supplier) {
+        die("Query failed: " . mysqli_error($connection));
+    }
+
+    while ($row = mysqli_fetch_assoc($mysqli_query_supplier)) {
+        echo "<option value='" . $row['type'] . "'>" . $row['type'] . "</option>";
+    }
+    ?>
+</select>
+
             </div>
+
 
 
             <div class="form-group">
-                <label for="part">Chicken Part:</label>
-                <select id="part" name="part">
-                    <option value="">-- Select --</option>
-                    <option value="breast">Breast</option>
-                    <option value="wings">Wings</option>
-                    <option value="drumstick">Drumstick</option>
-                    <option value="thigh">Thigh</option>
-                    <option value="whole">Whole Chicken</option>
-                </select>
-            </div>
+    <label for="part">Part:</label>
+    <select id="part" name="part">
+        <option value="">-- Select Part --</option>
+        <!-- This will be populated via AJAX -->
+    </select>
+</div>
+
+
             <div class="form-group">
                 <label for="price">Price:</label>
-                <input type="number" id="price" name="price" step="0.01"  required>
+                <input type="number" id="price" name="price" step="0.01" required>
             </div>
 
             <div class="form-group">
@@ -87,10 +103,13 @@
                 <input type="date" id="received_date" name="received_date" required>
             </div>
 
+
             <div class="form-group">
                 <label for="received_date">Meat Disposed:</label>
                 <input type="date" id="meat_disposed" name="meat_disposed" required>
             </div>
+
+
 
             <div class="form-group">
                 <label for="supplier">Supplier:</label>
@@ -111,11 +130,47 @@
                 </select>
             </div>
 
-
-            <button type="submit">Register Chicken Meat</button>
+            <button type="submit">Register Beef Meat</button>
             </form>
         </div>
     </div>
     <script src="script.js"></script>
+
+    <script>
+        // Listen for changes in the meat_type dropdown
+document.getElementById('meat_type').addEventListener('change', function() {
+    var meatType = this.value;
+    var partDropdown = document.getElementById('part');
+
+    // Clear the existing options in the part dropdown
+    partDropdown.innerHTML = '<option value="">-- Select Part --</option>';
+
+    if (meatType) {
+        // Send an AJAX request to fetch parts for the selected meat type
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'get_parts.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        xhr.onload = function() {
+            if (this.status === 200) {
+                var parts = JSON.parse(this.responseText);
+
+                // Populate the parts dropdown with the returned data
+                parts.forEach(function(part) {
+                    var option = document.createElement('option');
+                    option.value = part.toLowerCase();
+                    option.textContent = part;
+                    partDropdown.appendChild(option);
+                });
+            }
+        };
+
+        // Send the selected meat type to the server
+        xhr.send('meat_type=' + meatType);
+    }
+});
+
+
+    </script>
 </body>
 </html>

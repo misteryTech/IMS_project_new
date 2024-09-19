@@ -2,7 +2,8 @@
         <h2>Admin Dashboard</h2>
         <ul>
             <li><a href="#">Dashboard</a></li>
-               <li><a href="meat_type_registration.php">Meat Registration</a></li>
+               <li><a href="meat_reg.php">Meat Registration</a></li>
+               <li><a href="meat_registration2.php">Meat Type</a></li>
             <li><a href="meat_view.php">View Meat</a></li>
             <li><a href="search_meat.php">Search Meat</a></li>
             <li><a href="supplier_page.php">Supplier Registration</a></li>
