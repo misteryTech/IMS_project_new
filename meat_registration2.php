@@ -56,6 +56,9 @@
         button:hover {
             background-color: #45a049;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -72,22 +75,68 @@
             <form action="meat_type_reg.php" method="POST" class="form-container">
                 <h2>Meat Type Registration</h2>
                 <div class="form-group">
-                    <label for="shopname">Meat Type</label>
+                    <label for="meatname">Meat Type</label>
                     <input type="text" id="meatname" name="meatname" placeholder="Add Meat Type" required>
                 </div>
+
                 <div class="form-group">
                     <label for="meat_type">Select Meat Types:</label>
                     <div class="checkbox-group">
-                        <label><input type="checkbox" name="meat_types[]" value="Pork">Pork</label>
-                        <label><input type="checkbox" name="meat_types[]" value="Beef">Beef</label>
-                        <label><input type="checkbox" name="meat_types[]" value="Chicken">Chicken</label>
+                        <label><input type="checkbox" id="pork" name="meat_types[]" value="Pork" onchange="toggleCheckboxGroup('pork')">Pork</label>
+                        <label><input type="checkbox" id="beef" name="meat_types[]" value="Beef" onchange="toggleCheckboxGroup('beef')">Beef</label>
+                        <label><input type="checkbox" id="chicken" name="meat_types[]" value="Chicken" onchange="toggleCheckboxGroup('chicken')">Chicken</label>
                     </div>
                 </div>
+
+                <!-- Checkboxes for Pork -->
+                <div class="form-group hidden" id="pork-options">
+                    <label>Select Pork Parts:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="pork_parts[]" value="Loin">Loin</label>
+                        <label><input type="checkbox" name="pork_parts[]" value="Shoulder">Shoulder</label>
+                        <label><input type="checkbox" name="pork_parts[]" value="Belly">Belly</label>
+                    </div>
+                </div>
+
+                <!-- Checkboxes for Beef -->
+                <div class="form-group hidden" id="beef-options">
+                    <label>Select Beef Parts:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="beef_parts[]" value="Ribeye">Ribeye</label>
+                        <label><input type="checkbox" name="beef_parts[]" value="Sirloin">Sirloin</label>
+                        <label><input type="checkbox" name="beef_parts[]" value="Chuck">Chuck</label>
+                    </div>
+                </div>
+
+                <!-- Checkboxes for Chicken -->
+                <div class="form-group hidden" id="chicken-options">
+                    <label>Select Chicken Parts:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="chicken_parts[]" value="Breast">Breast</label>
+                        <label><input type="checkbox" name="chicken_parts[]" value="Thigh">Thigh</label>
+                        <label><input type="checkbox" name="chicken_parts[]" value="Wings">Wings</label>
+                    </div>
+                </div>
+
                 <button type="submit">Register Type</button>
             </form>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        function toggleCheckboxGroup(meatType) {
+            // Get the checkbox element for the given meat type
+            const checkbox = document.getElementById(meatType);
+            // Get the corresponding checkbox group for the meat type
+            const checkboxGroup = document.getElementById(`${meatType}-options`);
+            
+            // Show or hide the checkbox group based on checkbox selection
+            if (checkbox.checked) {
+                checkboxGroup.classList.remove('hidden');
+            } else {
+                checkboxGroup.classList.add('hidden');
+            }
+        }
+    </script>
 </body>
 </html>
