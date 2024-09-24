@@ -75,8 +75,8 @@
             <form action="meat_type_reg.php" method="POST" class="form-container">
                 <h2>Meat Type Registration</h2>
                 <div class="form-group">
-                    <label for="meatname">Meat Type</label>
-                    <input type="text" id="meatname" name="meatname" placeholder="Add Meat Type" required>
+                    <label for="meatname">Meat Name</label>
+                    <input type="text" id="meatname" name="meatname" placeholder="Add Meat Name" required>
                 </div>
 
                 <div class="form-group">
