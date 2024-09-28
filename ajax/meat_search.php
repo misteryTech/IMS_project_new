@@ -10,6 +10,21 @@ $search_term = "%" . $search_query . "%";
 $stmt->bind_param("s", $search_term);
 $stmt->execute();
 $result = $stmt->get_result();
+
+// Insert order logic (only if form is submitted)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_meat_id'])) {
+    $meat_id = $_POST['order_meat_id'];
+    $quantity = $_POST['quantity'];
+    
+    // Assuming you have an `orders` table with columns (id, meat_id, quantity, order_date)
+    $insert_sql = "INSERT INTO orders (meat_type_id, quantity, order_date) VALUES (?, ?, NOW())";
+    $insert_stmt = $connection->prepare($insert_sql);
+    $insert_stmt->bind_param("ii", $meat_id, $quantity);
+    $insert_stmt->execute();
+    $insert_stmt->close();
+    
+    echo "<div style='text-align:center;color:green;'>Order placed successfully!</div>";
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,13 +70,12 @@ $result = $stmt->get_result();
             cursor: pointer;
             margin-left: 10px;
         }
-        .btn{
+        .btn {
             padding: 10px;
             color: black;
             background-color: red;
             font-style: none;
         }
-
     </style>
 </head>
 <body>
@@ -69,7 +83,6 @@ $result = $stmt->get_result();
 <div class="form-container">
     <form action="meat_search.php" method="GET">
         <input type="text" name="search_query" placeholder="Search for meat parts..." value="<?= $search_query ?>">
-
         <button type="submit">Search</button>
         <a href="../search_meat.php" class="btn btn-primary">Back</a>
     </form>
@@ -83,6 +96,7 @@ $result = $stmt->get_result();
             <th>Meat Parts</th>
             <th>Price</th>
             <th>Purchased Date</th>
+            <th>Order</th>
         </tr>
     </thead>
     <tbody>
@@ -95,10 +109,17 @@ $result = $stmt->get_result();
                         <td>{$row['meat_parts']}</td>
                         <td>{$row['meat_price']}</td>
                         <td>{$row['purchased_date']}</td>
+                        <td>
+                            <form method='POST' action=''>
+                                <input type='hidden' name='order_meat_id' value='{$row['id']}'>
+                                <input type='number' name='quantity' value='1' min='1' required>
+                                <button type='submit'>Order</button>
+                            </form>
+                        </td>
                       </tr>";
             }
         } else {
-            echo "<tr><td colspan='5'>No results found</td></tr>";
+            echo "<tr><td colspan='6'>No results found</td></tr>";
         }
 
         // Close the prepared statement and the database connection

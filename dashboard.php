@@ -1,190 +1,147 @@
-<?php
-include("connection.php");
-
-// Query to count all registered meat
-$sql = "SELECT COUNT(*) AS total FROM meat_db";
-$result = $connection->query($sql);
-
-$totalMeat = 0;
-
-if ($result->num_rows > 0) {
-    // Fetch the result as an associative array
-    $row = $result->fetch_assoc();
-    $totalMeat = $row['total'];
-} else {
-    echo "Error: " . $sql . "<br>" . $connection->error;
-}
-
-
-// Query to count all registered meat
-$sql = "SELECT COUNT(*) AS total_user FROM user_db";
-$result = $connection->query($sql);
-
-$totalUser = 0;
-
-if ($result->num_rows > 0) {
-    // Fetch the result as an associative array
-    $row = $result->fetch_assoc();
-    $totalUser = $row['total_user'];
-} else {
-    echo "Error: " . $sql . "<br>" . $connection->error;
-}
-
-
-
-// Query to count all registered meat
-$sql = "SELECT COUNT(*) AS total_supplier FROM supplier";
-$result = $connection->query($sql);
-
-$totalSupplier = 0;
-
-if ($result->num_rows > 0) {
-    // Fetch the result as an associative array
-    $row = $result->fetch_assoc();
-    $totalSupplier = $row['total_supplier'];
-} else {
-    echo "Error: " . $sql . "<br>" . $connection->error;
-}
-
-
-$connection->close();
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Meat Registration</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .form-container {
+            width: 60%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        .search-container {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .search-container input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .search-container button {
+            width: 15%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .suggestions {
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            margin-top: 5px;
+            display: none;
+        }
+        .suggestions div {
+            padding: 8px;
+            cursor: pointer;
+            background-color: white;
+        }
+        .suggestions div:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+    <?php
+    include("sidebar.php");
 ?>
 
 
+</head>
+<body>
+    <div class="main-content">
+        <header>
+            <h1>Meat Registration Search</h1>
+        </header>
+        <div class="content">
 
-<?php
-    include("include/header.php");
-?>
+            <!-- Search bar -->
+            <div class="search-container">
+                <form action="ajax/meat_search.php" method="GET">
+                    <input type="text" id="search_query" name="search_query" placeholder="Search for registered meat products..." onkeyup="suggestKeywords(this.value)">
+                    <div class="suggestions" id="suggestions"></div>
+                    <button type="submit">Search</button>
 
-<body id="page-top">
-
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-            <?php include 'ims_sidebar.php'; ?>
-        <!-- End of Sidebar -->
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                        <?php
-                                include("include/topbar.php");
-                        ?>
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                    </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Registered Meat</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalMeat; ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                               Registered Supplier</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalSupplier; ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Registered User</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalUser; ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <!-- /.container-fluid -->
-
+                </form>
             </div>
-            <!-- End of Main Content -->
 
-            <!-- Footer -->
-<?php
-    include("include/footer.php");
-?>
+            <!-- Search Results Table -->
+
+        </div>
+    </div>
+
+    <script>
+        function suggestKeywords(query) {
+            if (query.length > 2) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "ajax/suggest_keywords.php?q=" + query, true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var suggestionsBox = document.getElementById("suggestions");
+                        suggestionsBox.innerHTML = xhr.responseText;
+                        suggestionsBox.style.display = "block";
+                    }
+                };
+                xhr.send();
+            } else {
+                document.getElementById("suggestions").style.display = "none";
+            }
+        }
+
+        function selectSuggestion(keyword) {
+            document.getElementById("search_query").value = keyword;
+            document.getElementById("suggestions").style.display = "none";
+        }
+    </script>
+</body>
+</html>

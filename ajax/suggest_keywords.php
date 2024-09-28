@@ -14,6 +14,9 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<div onclick='selectSuggestion(\"" . htmlspecialchars($row['meat_parts']) . "\")'>{$row['meat_parts']}</div>";
     }
+} else {
+    // Show message when no results found
+    echo "<div>No registered meat found</div>";
 }
 
 $stmt->close();
