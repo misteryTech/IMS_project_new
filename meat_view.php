@@ -49,7 +49,7 @@
                 include("connection.php");
 
                 // Retrieve data from the database
-                $sql_select = "SELECT * FROM meat_db";
+                $sql_select = "SELECT * FROM meat_registration_db";
                 $result = $connection->query($sql_select);
 
                 if ($result === false) {
@@ -63,11 +63,11 @@
                             echo "<tr>";
                             echo "<td>" . $row["id"] . "</td>";
                             echo "<td>" . $row["meat_type"] . "</td>";
-                            echo "<td>" . $row["meat_parts"] . "</td>";
-                            echo "<td>" . $row["meat_price"] . "</td>";
-                            echo "<td>" . $row["purchased_date"] . "</td>";
-                            echo "<td>" . $row["meat_disposed"] . "</td>";
-                            echo "<td>" . $row["supplier_id"] . "</td>";
+                            echo "<td>" . $row["part_name"] . "</td>";
+                            echo "<td>" . $row["price"] . "</td>";
+                            echo "<td>" . $row["date"] . "</td>";
+                            echo "<td>" . $row["dispatch_date"] . "</td>";
+                            echo "<td>" . $row["supplier"] . "</td>";
                             echo "<td>";
                             echo "<form action='meat_page_edit.php' method='post' style='display:inline-block;'>";
                             echo "<input type='hidden' name='id' value='" . $row["id"] . "' />";

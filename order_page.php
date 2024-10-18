@@ -8,7 +8,7 @@
 </head>
 <body>
 <?php
-    include ("sidebar.php");
+    include("sidebar.php");
 ?>
     <div class="main-content">
         <header>
@@ -26,7 +26,7 @@
                         <th>Meat Price</th>               
                         <th>Quantity</th>
                         <th>Date Order</th>
-                   
+                        <th>Total Price</th>
                     </tr>
                 </thead>
 
@@ -35,27 +35,31 @@
 
                     // SQL query to join supplier with meat_db details
                     $sql_select = "
-                        SELECT o.meat_type_id, o.quantity, o.order_date ,s.id, s.meat_type, s.meat_parts, s.meat_price
+                        SELECT o.*, MRB.*
                         FROM orders o
-                        INNER JOIN meat_db s 
-                        ON o.meat_type_id = s.id";
+                        INNER JOIN meat_registration_db MRB ON MRB.id = o.meat_type_id";
                     
                     $result = $connection->query($sql_select);
+
+                    $grandTotal = 0; // Variable to hold the total price of all orders
                 ?>
 
                 <tbody id="user-table">
                 <?php
                     // Output data of each row
                     if ($result->num_rows > 0) {
-                        while($row = $result->fetch_assoc()) {
+                        while ($row = $result->fetch_assoc()) {
+                            $totalPrice = $row["price"] * $row["quantity"];
+                            $grandTotal += $totalPrice; // Accumulate total price for all orders
+
                             echo "<tr>";
                             echo "<td>" . $row["id"] . "</td>";
                             echo "<td>" . $row["meat_type"] . "</td>";
-                            echo "<td>" . $row["meat_parts"] . "</td>";
-                            echo "<td>" . $row["meat_price"] . "</td>";
+                            echo "<td>" . $row["part_name"] . "</td>";
+                            echo "<td>" . number_format($row["price"], 2) . "</td>";
                             echo "<td>" . $row["quantity"] . "</td>";
                             echo "<td>" . $row["order_date"] . "</td>";
-            
+                            echo "<td>" . number_format($totalPrice, 2) . "</td>";
                             echo "</tr>";
                         }
                     } else {
@@ -64,6 +68,12 @@
                     $connection->close();
                 ?>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6" style="text-align: right; font-weight: bold;">Grand Total:</td>
+                        <td style="font-weight: bold;"><?php echo number_format($grandTotal, 2); ?></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
