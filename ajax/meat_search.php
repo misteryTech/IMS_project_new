@@ -132,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_meat_id'])) {
             <th>Meat Type</th>
             <th>Meat Parts</th>
             <th>Price</th>
+            <th>Supplier</th>
             <th>Purchased Date</th>
             <th>Order</th>
         </tr>
@@ -145,6 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_meat_id'])) {
                     <td>{$row['meat_type']}</td>
                     <td>{$row['part_name']}</td>
                     <td>{$row['price']}</td>
+                    <td>{$row['supplier']}</td>
                     <td>{$row['dispatch_date']}</td>
                     <td>
                         <button class='btn btn-primary' data-toggle='modal' data-target='#purchaseModal' 
