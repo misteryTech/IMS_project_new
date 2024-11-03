@@ -22,7 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Execute the query
             if (mysqli_query($connection, $query)) {
-                echo "Record added successfully for $partName.";
+                echo "<script>
+                alert('New part added successfully!');
+                window.location.href = '../meat_registration_new.php';
+              </script>";
             } else {
                 echo "Error: " . mysqli_error($connection);
             }
