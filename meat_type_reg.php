@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Redirect back to the form page after all insertions are done
-        echo "<script>alert('Registration successful!'); window.location.href = 'meat_registration2.php';</script>";
+        echo "<script>alert('Registration successful!'); window.location.href = 'meat_registration_r.php';</script>";
 
     } else {
         // Alert if no meat type was selected
