@@ -135,9 +135,16 @@
             </div>
 
             <div class="form-group">
-                <label>Batch Number:</label>
-                <input type="number" name="batch_number" required>
+                <label>Stock :</label>
+                <input type="text" name="stock" required>
             </div>
+
+            <div class="form-group">
+    <label>Batch Number:</label>
+    <input type="number" id="batch-number" name="batch_number" required readonly>
+    <button type="button" id="generate-batch" class="btn btn-secondary">Generate Batch Number</button>
+</div>
+
 
             <div class="form-group">
                 <label for="supplier">Supplier:</label>
@@ -163,3 +170,21 @@
     </div>
 </body>
 </html>
+
+
+<script>
+    function generateRandomBatchNumber() {
+    // Generate a random number between 100000 and 999999
+    const randomBatchNumber = Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('batch-number').value = randomBatchNumber;
+}
+
+// Generate a batch number on page load
+window.onload = generateRandomBatchNumber;
+
+// Generate a new batch number when the button is clicked
+document.getElementById('generate-batch').addEventListener('click', generateRandomBatchNumber);
+
+
+
+</script>

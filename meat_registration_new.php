@@ -109,19 +109,23 @@
     }
 
     // Function to fetch parts from the database
-    function fetchParts($conn, $meatType) {
-        $sql = "SELECT meat_parts FROM meat_new_db WHERE meat_type = '$meatType'";
-        $result = $conn->query($sql);
-        $parts = [];
+function fetchParts($conn, $meatType) {
+    $sql = "SELECT meat_parts FROM meat_new_db WHERE meat_type = '$meatType'";
+    $result = $conn->query($sql);
 
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $parts[] = $row['meat_parts'];
-            }
-        }
-        return $parts;
+    // Check if the query was successful
+    if (!$result) {
+        die("Query failed: " . $conn->error);
     }
 
+    $parts = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $parts[] = $row['meat_parts'];
+        }
+    }
+    return $parts;
+}
     $porkParts = fetchParts($conn, 'Pork');
     $beefParts = fetchParts($conn, 'Beef');
     $chickenParts = fetchParts($conn, 'Chicken');

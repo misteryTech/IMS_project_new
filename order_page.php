@@ -12,7 +12,7 @@
 ?>
     <div class="main-content">
         <header>
-            <h1>Welcome, Admin</h1>
+            <h1>Purchased Orders</h1>
             <button id="menu-toggle">Menu</button>
         </header>
         <div class="content">
@@ -20,12 +20,12 @@
             <table id="dataTable">
                 <thead>
                     <tr>
-                        <th>Meat ID</th>
-                        <th>Meat Name</th>
-                        <th>Meat Parts</th>
-                        <th>Meat Price</th>               
-                        <th>Quantity</th>
-                        <th>Date Order</th>
+                   
+                        <th>Meat Type</th>
+                        <th>Part Name</th>
+                        <th>Price</th>
+                        <!-- <th>Quantity</th> -->
+                        <th>Date Ordered</th>
                         <th>Total Price</th>
                     </tr>
                 </thead>
@@ -33,13 +33,9 @@
                 <?php
                     include("connection.php");
 
-                    // SQL query to join supplier with meat_db details
-                    $sql_select = "
-                        SELECT o.*, MRB.*
-                        FROM orders o
-                        INNER JOIN meat_registration_db MRB ON MRB.id = o.meat_type_id";
-                    
-                    $result = $connection->query($sql_select);
+                    // SQL query to fetch orders
+                    $sql_select = "SELECT * FROM orders";
+                    $result = mysqli_query($connection, $sql_select);
 
                     $grandTotal = 0; // Variable to hold the total price of all orders
                 ?>
@@ -47,25 +43,27 @@
                 <tbody id="user-table">
                 <?php
                     // Output data of each row
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            $totalPrice = $row["price"] * $row["quantity"];
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $totalPrice = (isset($row["price"]) && isset($row["quantity"])) ? $row["price"] * $row["quantity"] : 0;
                             $grandTotal += $totalPrice; // Accumulate total price for all orders
 
                             echo "<tr>";
-                            echo "<td>" . $row["id"] . "</td>";
-                            echo "<td>" . $row["meat_type"] . "</td>";
-                            echo "<td>" . $row["part_name"] . "</td>";
-                            echo "<td>" . number_format($row["price"], 2) . "</td>";
-                            echo "<td>" . $row["quantity"] . "</td>";
-                            echo "<td>" . $row["order_date"] . "</td>";
+                            
+                            echo "<td>" . (isset($row["meat_type"]) ? $row["meat_type"] : 'N/A') . "</td>";
+                            echo "<td>" . (isset($row["part_name"]) ? $row["part_name"] : 'N/A') . "</td>";
+                            echo "<td>" . (isset($row["price"]) ? number_format($row["price"], 2) : 'N/A') . "</td>";
+                            // echo "<td>" . (isset($row["quantity"]) ? $row["quantity"] : 'N/A') . "</td>";
+                            echo "<td>" . (isset($row["order_date"]) ? $row["order_date"] : 'N/A') . "</td>";
                             echo "<td>" . number_format($totalPrice, 2) . "</td>";
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='7'>0 results</td></tr>";
+                        echo "<tr><td colspan='7'>No orders found</td></tr>";
                     }
-                    $connection->close();
+
+                    // Close the database connection
+                    mysqli_close($connection);
                 ?>
                 </tbody>
                 <tfoot>

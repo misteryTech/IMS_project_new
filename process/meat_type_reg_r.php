@@ -11,16 +11,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dispatchDate = $_POST['dispatch_date'];
     $batchNumber = $_POST['batch_number'];
     $supplier = $_POST['supplier'];
+    $stock = $_POST['stock'];
 
     // Prepare the insert query with a prepared statement
-    $stmt = $connection->prepare("INSERT INTO meat_registration_db (meat_type, part_name, price, date, dispatch_date, batch_number, supplier) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $connection->prepare("INSERT INTO meat_registration_db (meat_type, part_name, price, date, dispatch_date, batch_number, supplier, stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
     if ($stmt === false) {
         die("Failed to prepare statement: " . htmlspecialchars($connection->error));
     }
 
     // Bind the parameters
-    $stmt->bind_param("ssissis", $meatType, $partName, $price, $date, $dispatchDate, $batchNumber, $supplier);
+    $stmt->bind_param("ssississ", $meatType, $partName, $price, $date, $dispatchDate, $batchNumber, $supplier, $stock);
 
     // Execute the statement
     if ($stmt->execute()) {

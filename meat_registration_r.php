@@ -42,9 +42,16 @@ if ($conn->connect_error) {
 
 // Fetch registered meat types and parts
 $registeredMeatTypes = $conn->query("SELECT * FROM meat_types");
+if (!$registeredMeatTypes) {
+    echo "Error: " . $conn->error;
+}
+
 $registeredMeatParts = $conn->query("SELECT meat_parts.id, meat_parts.part_name, meat_types.meat_type 
                                       FROM meat_parts 
                                       JOIN meat_types ON meat_parts.meat_type_id = meat_types.id");
+if (!$registeredMeatParts) {
+    echo "Error: " . $conn->error;
+}
 ?>
 
 <div class="main-content">
@@ -66,7 +73,7 @@ $registeredMeatParts = $conn->query("SELECT meat_parts.id, meat_parts.part_name,
             <div class="meat-list">
                 <h3>Registered Meat Types:</h3>
                 <?php
-                if ($registeredMeatTypes->num_rows > 0) {
+                if ($registeredMeatTypes && $registeredMeatTypes->num_rows > 0) {
                     while ($row = $registeredMeatTypes->fetch_assoc()) {
                         echo "<div class='meat-item'>" . htmlspecialchars($row['meat_type']) . 
                              " <a href='process/delete_meat_type.php?id=" . htmlspecialchars($row['id']) . "'>Delete</a></div>";
@@ -88,7 +95,7 @@ $registeredMeatParts = $conn->query("SELECT meat_parts.id, meat_parts.part_name,
                         <option value="">-- Select Meat Type --</option>
                         <?php
                         $meatTypesResult = $conn->query("SELECT * FROM meat_types");
-                        if ($meatTypesResult->num_rows > 0) {
+                        if ($meatTypesResult && $meatTypesResult->num_rows > 0) {
                             while ($row = $meatTypesResult->fetch_assoc()) {
                                 echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['meat_type']) . "</option>";
                             }
@@ -106,17 +113,16 @@ $registeredMeatParts = $conn->query("SELECT meat_parts.id, meat_parts.part_name,
             <div class="meat-list">
                 <h3>Registered Meat Parts:</h3>
                 <?php
-if ($registeredMeatParts->num_rows > 0) {
-    while ($row = $registeredMeatParts->fetch_assoc()) {
-        echo "<div class='meat-item'>" . htmlspecialchars($row['meat_type']) . " - " . htmlspecialchars($row['part_name']) . 
-             " <a href='process/delete_meat_part.php?id=" . htmlspecialchars($row['id']) . "'>Delete</a> | " .
-             "<a href='meat_registration_form.php?meat_type=" . urlencode($row['meat_type']) . "&part_name=" . urlencode($row['part_name']) . "'>Register Details</a></div>";
-    }
-} else {
-    echo "<div class='meat-item'>No meat parts registered yet.</div>";
-}
-?>
-
+                if ($registeredMeatParts && $registeredMeatParts->num_rows > 0) {
+                    while ($row = $registeredMeatParts->fetch_assoc()) {
+                        echo "<div class='meat-item'>" . htmlspecialchars($row['meat_type']) . " - " . htmlspecialchars($row['part_name']) . 
+                             " <a href='process/delete_meat_part.php?id=" . htmlspecialchars($row['id']) . "'>Delete</a> | " .
+                             "<a href='meat_registration_form.php?meat_type=" . urlencode($row['meat_type']) . "&part_name=" . urlencode($row['part_name']) . "'>Register Details</a></div>";
+                    }
+                } else {
+                    echo "<div class='meat-item'>No meat parts registered yet.</div>";
+                }
+                ?>
             </div>
         </div>
     </div>

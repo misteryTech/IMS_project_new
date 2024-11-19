@@ -52,7 +52,7 @@
 ?>
     <div class="main-content">
         <header>
-            <h1>Welcome, Admin</h1>
+            <h1>Supplier Registration</h1>
             <button id="menu-toggle">Menu</button>
         </header>
         <div class="content">

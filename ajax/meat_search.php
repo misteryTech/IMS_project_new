@@ -1,4 +1,10 @@
 <?php
+
+header('Content-Type: application/json');
+echo json_encode($response);
+
+
+
 include("../connection.php");
 
 $search_query = htmlspecialchars($_GET['search_query'] ?? '', ENT_QUOTES, 'UTF-8');

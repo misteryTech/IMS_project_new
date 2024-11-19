@@ -12,7 +12,7 @@
 ?>
     <div class="main-content">
         <header>
-            <h1>Welcome, Admin</h1>
+            <h1>Registered Supplier</h1>
             <button id="menu-toggle">Menu</button>
         </header>
         <div class="content">
@@ -20,7 +20,7 @@
             <table  id="dataTable">
                 <thead>
                     <tr>
-                                             <th>Meat ID</th>
+                                           
                                             <th>Supplier Shop Name</th>
                                             <th>Supplier Name</th>
                                             <th>Supplier Contact</th>
@@ -46,7 +46,7 @@
                                                         if ($result->num_rows > 0) {
                                                             while($row = $result->fetch_assoc()) {
                                                                 echo "<tr>";
-                                                                echo "<td>" . $row["supplier_id"]. "</td>";
+                                                               ;
                                                                 echo "<td>" . $row["shopname"]. "</td>";
                                                                 echo "<td>" . $row["supplier_shop_name"]. "</td>";
                                                                 echo "<td>" . $row["supplier_contact"]. "</td>";
