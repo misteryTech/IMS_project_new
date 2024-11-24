@@ -34,7 +34,13 @@
                     include("connection.php");
 
                     // SQL query to fetch orders
-                    $sql_select = "SELECT * FROM orders";
+                    $sql_select = "SELECT O.*, MRB.*
+                    
+                    
+                    FROM orders AS O
+                    INNER JOIN meat_registration_db AS  MRB ON MRB.id = O.meat_type_id
+                    
+                    ";
                     $result = mysqli_query($connection, $sql_select);
 
                     $grandTotal = 0; // Variable to hold the total price of all orders
@@ -77,5 +83,6 @@
     </div>
 
     <script src="script.js"></script>
+    
 </body>
 </html>

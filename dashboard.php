@@ -116,7 +116,7 @@
             <!-- Search bar -->
             <div class="search-container">
                 <form onsubmit="searchById(event)">
-                    <input type="number" id="search_query" name="search_query" placeholder="Enter ID to search..." required>
+                    <input type="text" id="search_query" name="search_query" placeholder="Enter ID to search..." >
                     <button type="submit">Find</button>
                 </form>
             </div>

@@ -159,7 +159,7 @@
     let currentMeatId; // Global variable to store the current meat ID
 
     function openBarcodeModal(meatId, meatType, partName, price, batchNumber, supplier) {
-        currentMeatId = meatId;
+        currentMeatId = batchNumber;
         document.getElementById("modalMeatType").innerText = meatType || "N/A";
         document.getElementById("modalPartName").innerText = partName || "N/A";
         document.getElementById("modalPrice").innerText = price || "N/A";
