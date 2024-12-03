@@ -10,15 +10,25 @@ if ($conn->connect_error) {
 // Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $meat_type_id = $conn->real_escape_string($_POST['meat_type_id']); // Sanitizing input
-    $part_name = $conn->real_escape_string($_POST['part_name']); // Sanitizing input
 
-    // Insert new meat part with reference to meat type
-    $sql = "INSERT INTO meat_parts (meat_type_id, part_name) VALUES ('$meat_type_id', '$part_name')";
+    // Check if part_name is an array
+    if (isset($_POST['part_name']) && is_array($_POST['part_name'])) {
+        $part_names = $_POST['part_name']; // Array of part names
 
-    if ($conn->query($sql) === TRUE) {
-        echo "New meat part registered successfully.";
+        foreach ($part_names as $part_name) {
+            $part_name = $conn->real_escape_string($part_name); // Sanitize each part name
+
+            // Insert each part name into the database
+            $sql = "INSERT INTO meat_parts (meat_type_id, part_name) VALUES ('$meat_type_id', '$part_name')";
+
+            if (!$conn->query($sql)) {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+        }
+
+        echo "All parts have been registered successfully.";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: No parts provided.";
     }
 }
 

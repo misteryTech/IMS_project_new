@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Meat Registration</title>
     <style>
-        /* Basic Reset */
+       /* Basic Reset */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
         /* Sidebar */
         .sidebar { width: 250px; height: 100vh; background-color: #2c3e50; color: white; position: fixed; top: 0; left: 0; padding: 20px; }
@@ -22,11 +22,17 @@
         .form-group { margin-bottom: 15px; }
         label { font-size: 14px; margin-bottom: 5px; display: block; }
         input[type="text"], select { width: 100%; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; }
-        button { padding: 10px 15px; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px; }
-        button:hover { background-color: #45a049; }
+        button { padding: 10px 15px; font-size: 16px; border: none; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px; }
+        button.add-part { background-color: #007bff; color: white; }
+        button.add-part:hover { background-color: #0056b3; }
+        button.remove-part { background-color: #dc3545; color: white; }
+        button.remove-part:hover { background-color: #a71d2a; }
+        button[type="submit"] { background-color: #4CAF50; color: white; }
+        button[type="submit"]:hover { background-color: #45a049; }
         .meat-list { margin-top: 20px; }
         .meat-list h3 { font-size: 16px; margin-bottom: 10px; }
         .meat-item { font-size: 14px; padding: 5px; background-color: #ffffff; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center; }
+     
     </style>
 </head>
 <body>
@@ -85,7 +91,6 @@ if (!$registeredMeatParts) {
             </div>
         </div>
 
-        <!-- Meat Part Registration Form -->
         <div class="form-container">
             <h2>Meat Part Registration</h2>
             <form action="process/meat_part_registration.php" method="POST">
@@ -95,22 +100,24 @@ if (!$registeredMeatParts) {
                         <option value="">-- Select Meat Type --</option>
                         <?php
                         $meatTypesResult = $conn->query("SELECT * FROM meat_types");
-                        if ($meatTypesResult && $meatTypesResult->num_rows > 0) {
-                            while ($row = $meatTypesResult->fetch_assoc()) {
-                                echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['meat_type']) . "</option>";
-                            }
+                        while ($meatTypesResult && $row = $meatTypesResult->fetch_assoc()) {
+                            echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['meat_type']) . "</option>";
                         }
                         ?>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="part_name">Part Name:</label>
-                    <input type="text" id="part_name" name="part_name" required>
+                <div id="parts-container">
+                    <div class="form-group part-item">
+                        <label for="part_name_1">Part Name:</label>
+                        <input type="text" id="part_name_1" name="part_name[]" required>
+                        <button type="button" class="remove-part" style="display:none;">Remove</button>
+                    </div>
                 </div>
-                <button type="submit">Register Meat Part</button>
+                <button type="button" class="add-part" id="add-part">Add Part</button>
+                <button type="submit">Register Meat Parts</button>
             </form>
 
-            <div class="meat-list">
+             <div class="meat-list">
                 <h3>Registered Meat Parts:</h3>
                 <?php
                 if ($registeredMeatParts && $registeredMeatParts->num_rows > 0) {
@@ -126,9 +133,42 @@ if (!$registeredMeatParts) {
             </div>
         </div>
     </div>
+
+
 </div>
 
 <?php $conn->close(); ?>
 
 </body>
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const partsContainer = document.getElementById('parts-container');
+        const addPartButton = document.getElementById('add-part');
+        let partIndex = 1;
+
+        addPartButton.addEventListener('click', function() {
+            partIndex++;
+            const partItem = document.createElement('div');
+            partItem.classList.add('form-group', 'part-item');
+            partItem.innerHTML = `
+                <label for="part_name_${partIndex}">Part Name:</label>
+                <input type="text" id="part_name_${partIndex}" name="part_name[]" required>
+                <button type="button" class="remove-part">Remove</button>
+            `;
+            partsContainer.appendChild(partItem);
+
+            const removeButtons = document.querySelectorAll('.remove-part');
+            removeButtons.forEach(button => button.style.display = 'inline');
+        });
+
+        partsContainer.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('remove-part')) {
+                const partItem = e.target.parentElement;
+                partsContainer.removeChild(partItem);
+            }
+        });
+    });
+
+
+</script>

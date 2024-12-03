@@ -21,7 +21,7 @@ if ($result->num_rows > 0) {
     echo "<script>alert('Login Successful');</script>";
 
     // Redirect to a dashboard or another page after successful login
-     header("Location: dashboard.php");
+     header("Location: order_dashboard.php");
 } else {
     echo "<script>alert('Invalid email or password');</script>";
     header("Location: index.php");
