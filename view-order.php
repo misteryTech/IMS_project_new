@@ -183,7 +183,7 @@
                         echo "<td>" . number_format($row['total'], 2) . "</td>";
                         echo "<td>" . number_format($row['payment'], 2) . "</td>";
                         echo "<td>" . number_format($row['amount_change'], 2) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
+                        echo "<td>" .  date ( $row ['created_at']) . "</td>";
                         echo "</tr>";
                     }
                 } else {

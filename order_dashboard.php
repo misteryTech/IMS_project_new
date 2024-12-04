@@ -56,7 +56,7 @@
     </style>
 </head>
 <body>
-    <h1 class="text-center text-primary mb-4">Tan Meat Shop Dashboard</h1>
+   <a href="http://localhost/ims_project_new/meat_view.php"> <h1 class="text-center text-primary mb-4">Tan Meat Shop Dashboard</h1></a>
 
     <div class="container">
         <div class="row">

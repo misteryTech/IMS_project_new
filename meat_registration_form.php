@@ -106,7 +106,7 @@
 
     <div class="form-container">
         <form action="process/meat_type_reg_r.php" method="POST">
-            <h2>Register Meat Type</h2>
+           <a href="http://localhost/ims_project_new/meat_registration_r.php"> <h2>Register Meat Type</h2></a>
 
             <div class="form-group">
                 <label for="meat_type">Meat Type:</label>

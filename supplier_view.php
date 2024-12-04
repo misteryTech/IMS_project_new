@@ -10,6 +10,17 @@
 <?php
     include ("sidebar.php");
 ?>
+
+
+<style>
+
+    
+.btn-success {
+    background-color: #1974c9;
+    color: #fff;
+}
+
+</style>
     <div class="main-content">
         <header>
             <h1>Registered Supplier</h1>
@@ -54,9 +65,17 @@
 
                                                                 echo "<td>";
 
+
+                                                                
                                                                 echo "<form action='supplier_page_edit.php' method='post'>";
                                                                 echo "<input type='hidden' name='id' value='" . $row["supplier_id"] . "' />";
-                                                                echo "<button type='submit' class='btn btn-edit btn-success'>Edit</button>";
+                                                                echo "<button type='submit' class='btn btn-success btn-success'>Request Order</button>";
+                                                                echo "</form>";
+
+
+                                                                echo "<form action='supplier_page_edit.php' method='post'>";
+                                                                echo "<input type='hidden' name='id' value='" . $row["supplier_id"] . "' />";
+                                                                echo "<button type='submit' class='btn btn-edit btn-edit'>Edit</button>";
                                                                 echo "</form>";
 
                                                                 echo "<form action='supplier_delete.php' method='post'>";
